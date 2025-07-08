@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\MemberResource\Pages;
+use App\Filament\Resources\MemberResource\RelationManagers;
+use App\Models\Member;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,31 +13,34 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class MemberResource extends Resource
 {
-    protected static ?string $title = 'Manager Users';
+    protected static ?string $model = Member::class;
 
-    protected static ?string $model = User::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-
-
-    protected static ?string $navigationLabel = 'Manager Users';
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-    protected static ?string $navigationBadgeTooltip = 'Jumlah Member';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('nama_lengkap')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('nik')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('no_rekening')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('jabatan')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('site')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('gaji_pokok')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -46,10 +49,6 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('role')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('ANGGOTA'),
             ]);
     }
 
@@ -57,11 +56,20 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('nama_lengkap')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('nik')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('no_rekening')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('jabatan')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('site')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('gaji_pokok')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -71,12 +79,15 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -98,10 +109,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListMembers::route('/'),
+            'create' => Pages\CreateMember::route('/create'),
+            'edit' => Pages\EditMember::route('/{record}/edit'),
         ];
     }
 
