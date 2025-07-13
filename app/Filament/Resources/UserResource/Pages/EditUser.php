@@ -19,4 +19,13 @@ class EditUser extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    protected function beforeSave(): void
+    {
+        if (empty($this->form->getState()['password'])) {
+            $this->form->fill([
+                'password' => null,
+            ]);
+        }
+    }
 }

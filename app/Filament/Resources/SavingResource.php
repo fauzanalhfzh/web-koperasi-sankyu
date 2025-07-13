@@ -6,7 +6,7 @@ use App\Filament\Resources\SavingResource\Pages;
 use App\Filament\Resources\SavingResource\RelationManagers;
 use App\Models\Member;
 use App\Models\Saving;
-use Filament\Actions\EditAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;

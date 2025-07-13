@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Enums\ROLES;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -44,13 +46,22 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->nullable()
+                    ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
                     ->maxLength(255),
-                Forms\Components\TextInput::make('role')
+                Forms\Components\Select::make('role')
                     ->required()
-                    ->maxLength(255)
-                    ->default('ANGGOTA'),
+                    ->options(User::ROLES)
+                    ->default(User::ROLE_DEFAULT),
             ]);
+    }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        if (empty($data['password'])) {
+            unset($data['password']); // hapus password kalau kosong, biar gak diupdate
+        }
+        return $data;
     }
 
     public static function table(Table $table): Table
