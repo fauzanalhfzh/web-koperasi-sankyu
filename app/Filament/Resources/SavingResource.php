@@ -30,7 +30,7 @@ class SavingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static ?string $navigationGroup = 'Koperasi';
+    protected static ?string $navigationGroup = 'Riwayat Transaksi';
 
     protected static ?string $label = 'Simpanan';
 

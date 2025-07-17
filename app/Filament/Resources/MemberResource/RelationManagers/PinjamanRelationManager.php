@@ -111,10 +111,6 @@ class PinjamanRelationManager extends RelationManager
                     ->prefix('Rp.')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cicilan')
-                    ->prefix('Rp.')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_pengajuan')
                     ->date()
                     ->sortable(),
@@ -129,6 +125,10 @@ class PinjamanRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bunga')
                     ->suffix('%')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('cicilan')
+                    ->prefix('Rp.')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\SelectColumn::make('status_pengajuan')
