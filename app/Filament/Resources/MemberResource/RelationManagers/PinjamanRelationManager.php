@@ -1,47 +1,30 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\MemberResource\RelationManagers;
 
-use App\Filament\Resources\LoanResource\Pages;
-use App\Filament\Resources\LoanResource\RelationManagers;
-use App\Models\Loan;
 use App\Models\Member;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LoanResource extends Resource
+class PinjamanRelationManager extends RelationManager
 {
-    protected static ?string $model = Loan::class;
+    protected static string $relationship = 'pinjaman';
 
-    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-
-    protected static ?string $navigationGroup = 'Koperasi';
-
-    protected static ?string $label = 'Pinjaman';
-
-    protected static ?string $navigationLabel = 'Pinjaman';
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('member_id')
-                    ->label('Nama Anggota')
-                    ->options(Member::all()->pluck('nama_lengkap', 'id'))
+                Forms\Components\TextInput::make('member_id')
+                    ->label('ID Anggota')
                     ->required()
-                    ->searchable(),
+                    ->default(fn() => $this->getOwnerRecord()?->id)
+                    ->disabled(),
                 Forms\Components\DatePicker::make('tanggal_pengajuan')
                     ->label('Tanggal Pengajuan')
                     ->default(now())
@@ -116,12 +99,14 @@ class LoanResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('loan')
             ->columns([
                 Tables\Columns\TextColumn::make('member.nama_lengkap')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('jumlah_pinjaman')
                     ->prefix('Rp.')
                     ->numeric()
@@ -167,7 +152,10 @@ class LoanResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -176,38 +164,7 @@ class LoanResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListLoans::route('/'),
-            'create' => Pages\CreateLoan::route('/create'),
-            'edit' => Pages\EditLoan::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
-    public static function getCreateButtonLabel(): string
-    {
-        return 'Tambah Pinjaman';
     }
 }

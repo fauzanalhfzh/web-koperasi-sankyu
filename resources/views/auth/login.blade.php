@@ -23,7 +23,7 @@
     <div class="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
         <h1 class="text-4xl font-bold mb-6 text-center text-blue-700">PT. Sankyu Indonesia International </h1>
         <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">Login Anggota</h1>
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="">
             @csrf
             <div class="mb-5">
                 <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>

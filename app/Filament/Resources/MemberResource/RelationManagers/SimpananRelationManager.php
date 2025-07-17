@@ -1,55 +1,33 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\MemberResource\RelationManagers;
 
-use App\Filament\Resources\SavingResource\Pages;
-use App\Filament\Resources\SavingResource\RelationManagers;
 use App\Models\Member;
-use App\Models\Saving;
-use Filament\Tables\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\ForceDeleteBulkAction;
-use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SavingResource extends Resource
+class SimpananRelationManager extends RelationManager
 {
-    protected static ?string $model = Saving::class;
+    protected static string $relationship = 'simpanan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
-    protected static ?string $navigationGroup = 'Koperasi';
-
-    protected static ?string $label = 'Simpanan';
-
-    protected static ?string $navigationLabel = 'Simpanan';
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('member_id')
-                    ->label('Nama Anggota')
-                    ->options(Member::all()->pluck('nama_lengkap', 'id'))
+                TextInput::make('member_id')
+                    ->label('ID Anggota')
                     ->required()
-                    ->searchable(),
+                    ->default(fn() => $this->getOwnerRecord()?->id)
+                    ->disabled(),
                 Select::make('jenis_simpanan')
                     ->label('Jenis Simpanan')
                     ->options([
@@ -74,16 +52,11 @@ class SavingResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('saving')
             ->columns([
-                TextColumn::make('member.nama_lengkap')
-                    ->label('Nama Anggota')
-                    ->searchable(),
-                TextColumn::make('jenis_simpanan')
-                    ->label('Jenis Simpanan')
-                    ->searchable(),
                 TextColumn::make('jumlah_simpanan')
                     ->label('Nominal Simpanan')
                     ->prefix('Rp.')
@@ -93,6 +66,13 @@ class SavingResource extends Resource
                     ->label('Tanggal Transaksi')
                     ->date()
                     ->sortable(),
+                TextColumn::make('jenis_simpanan')
+                    ->label('Jenis Simpanan')
+                    ->searchable(),
+                TextColumn::make('member.nama_lengkap')
+                    ->label('Nama Anggota')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 TextColumn::make('keterangan')
                     ->label('Keterangan')
                     ->searchable(),
@@ -113,41 +93,19 @@ class SavingResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TrashedFilter::make(),
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                EditAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListSavings::route('/'),
-            'create' => Pages\CreateSaving::route('/create'),
-            'edit' => Pages\EditSaving::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

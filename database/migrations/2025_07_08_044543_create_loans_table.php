@@ -17,10 +17,11 @@ return new class extends Migration
             $table->foreignIdFor(Member::class);
             $table->integer('jumlah_pinjaman');
             $table->date('tanggal_pengajuan');
-            $table->date('jangka_waktu');
-            $table->boolean('status_pinjaman')->default(false);
+            $table->integer('jangka_waktu');
+            $table->integer('cicilan');
             $table->integer('bunga');
-            $table->boolean('status_pengajuan');
+            $table->enum('status_pinjaman', ['lunas', 'belum_lunas'])->default('belum_lunas');
+            $table->enum('status_pengajuan', ['pending', 'diterima', 'ditolak'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });

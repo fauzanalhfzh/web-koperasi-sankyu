@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MemberResource\Pages;
 use App\Filament\Resources\MemberResource\RelationManagers;
+use App\Filament\Resources\MemberResource\RelationManagers\PinjamanRelationManager;
+use App\Filament\Resources\MemberResource\RelationManagers\SimpananRelationManager;
+use App\Filament\Resources\MemberResource\Widgets\MemberStatsOverview;
 use App\Models\Member;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,6 +21,17 @@ class MemberResource extends Resource
     protected static ?string $model = Member::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $label = 'Anggota';
+
+    protected static ?string $navigationLabel = 'Anggota';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+
 
     public static function form(Form $form): Form
     {
@@ -46,6 +60,7 @@ class MemberResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
+                    ->revealable()
                     ->password()
                     ->required()
                     ->maxLength(255),
@@ -89,6 +104,7 @@ class MemberResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -102,7 +118,8 @@ class MemberResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SimpananRelationManager::class,
+            PinjamanRelationManager::class,
         ];
     }
 

@@ -10,4 +10,14 @@ class Member extends Model
     use SoftDeletes;
 
     protected $guarded = [];
+
+    public function simpanan()
+    {
+        return $this->hasMany(Saving::class);
+    }
+
+    public function pinjaman()
+    {
+        return $this->hasMany(Loan::class);
+    }
 }

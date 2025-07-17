@@ -15,9 +15,10 @@ return new class extends Migration
         Schema::create('savings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Member::class);
-            $table->string('jenis_simpanan');
+            $table->enum('jenis_simpanan', ['wajib', 'pokok']);
+            $table->integer('jumlah_simpanan');
             $table->date('tanggal_transaksi');
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
