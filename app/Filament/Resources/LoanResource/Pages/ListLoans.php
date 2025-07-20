@@ -17,6 +17,12 @@ class ListLoans extends ListRecords
             Actions\CreateAction::make()
                 ->label('Tambah Pinjaman')
                 ->icon('heroicon-o-plus'),
+            Actions\Action::make('generate_laporan')
+                ->label('Cetak Laporan')
+                ->color('success')
+                ->icon('heroicon-o-document-text')
+                ->url(fn() => route('laporan-transaksi-pinjaman'))
+                ->openUrlInNewTab(),
         ];
     }
 
