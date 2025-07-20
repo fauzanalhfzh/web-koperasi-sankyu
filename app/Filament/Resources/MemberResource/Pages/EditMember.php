@@ -18,4 +18,11 @@ class EditMember extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Resources\MemberResource\Widgets\StatsMemberWidget::class,
+        ];
+    }
 }

@@ -17,14 +17,14 @@ class User extends Authenticatable
 
     const ROLE_PEMBUKUAN = "PEMBUKUAN";
 
-    const ROLE_ANGGOTA = "ANGGOTA";
+    const ROLE_ANGGOTA = "SC";
 
-    const ROLE_DEFAULT = self::ROLE_ANGGOTA;
+    const ROLE_DEFAULT = self::ROLE_ADMIN;
 
     public const ROLES = [
         self::ROLE_ADMIN => 'Admin',
         self::ROLE_PEMBUKUAN => 'Pembukuan',
-        self::ROLE_ANGGOTA => 'Anggota',
+        self::ROLE_ANGGOTA => 'SC',
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\LoanResource\Pages;
 
 use App\Filament\Resources\LoanResource;
+use App\Filament\Resources\LoanResource\Widgets\StatsLoanWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,6 +17,13 @@ class ListLoans extends ListRecords
             Actions\CreateAction::make()
                 ->label('Tambah Pinjaman')
                 ->icon('heroicon-o-plus'),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            StatsLoanWidget::class
         ];
     }
 }
