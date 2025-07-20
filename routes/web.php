@@ -14,4 +14,4 @@ Route::post('/login', [MemberController::class, 'login']);
 Route::get('/dashboard-anggota', [MemberController::class, 'dashboardAnggota'])->name('dashboard-anggota');
 Route::post('/logout', [MemberController::class, 'logout'])->name('logout');
 Route::get('/laporan-transaksi', [laporanTransaksiController::class, 'laporan_transaksi'])->name('laporan-transaksi');
-Route::get('/laporan-anggota/{id}', [laporanTransaksiController::class, 'laporan_anggota']);
+Route::get('/laporan-anggota/{id}', [laporanTransaksiController::class, 'laporan_anggota'])->name('laporan-anggota');

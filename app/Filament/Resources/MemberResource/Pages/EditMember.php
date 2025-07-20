@@ -16,6 +16,13 @@ class EditMember extends EditRecord
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
             Actions\RestoreAction::make(),
+
+            Actions\Action::make('generate_laporan')
+                ->label('Cetak Laporan')
+                ->color('success')
+                ->icon('heroicon-o-document-text')
+                ->url(fn() => route('laporan-anggota', ['id' => $this->record->id]))
+                ->openUrlInNewTab(),
         ];
     }
 

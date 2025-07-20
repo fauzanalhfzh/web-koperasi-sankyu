@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Indigo,
             ])
             ->font('Poppins')
-            ->defaultThemeMode(ThemeMode::Dark)
+            ->defaultThemeMode(ThemeMode::Light)
             ->brandName('PT. Sankyu Indonesia International')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

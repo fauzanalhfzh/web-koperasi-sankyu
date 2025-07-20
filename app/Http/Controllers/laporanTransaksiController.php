@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Mpdf\Mpdf;
 
 class laporanTransaksiController extends Controller
 {
@@ -11,7 +12,19 @@ class laporanTransaksiController extends Controller
     {
         $simpanan = \App\Models\Saving::with('member')->get();
         $pinjaman = \App\Models\Loan::with('member')->get();
-        return view('generate-pdf.laporan-transakaksi', compact('simpanan', 'pinjaman'));
+
+        // Render Blade view menjadi HTML string
+        $html = view('generate-pdf.laporan-transaksi', compact('simpanan', 'pinjaman'))->render();
+
+        // Buat instance mPDF
+        $mpdf = new Mpdf();
+
+        // Tulis HTML ke PDF
+        $mpdf->WriteHTML($html);
+
+        // Output PDF langsung ke browser
+        return response($mpdf->Output('laporan-transaksi.pdf', 'I'), 200)
+            ->header('Content-Type', 'application/pdf');
     }
 
     public function laporan_anggota($id)
@@ -20,7 +33,19 @@ class laporanTransaksiController extends Controller
         $simpanan = \App\Models\Saving::where('member_id', $id)->get();
         $pinjaman = \App\Models\Loan::where('member_id', $id)->get();
         $cicilan = \App\Models\Loan::where('member_id', $id)->value('cicilan');
+        $jangka_waktu = \App\Models\Loan::where('member_id', $id)->value('jangka_waktu');
 
-        return view('generate-pdf.laporan-anggota', compact('anggota', 'simpanan', 'pinjaman', 'cicilan'));
+        // Render Blade view menjadi HTML string
+        $html = view('generate-pdf.laporan-anggota', compact('anggota', 'simpanan', 'pinjaman', 'cicilan', 'jangka_waktu'))->render();
+
+        // Buat instance mPDF
+        $mpdf = new \Mpdf\Mpdf();
+
+        // Tulis HTML ke PDF
+        $mpdf->WriteHTML($html);
+
+        // Output PDF langsung ke browser
+        return response($mpdf->Output('laporan-anggota.pdf', 'I'), 200)
+            ->header('Content-Type', 'application/pdf');
     }
 }

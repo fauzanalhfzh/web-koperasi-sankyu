@@ -48,6 +48,7 @@
 
     <h3>Data Pinjaman</h3>
     <h5>Besaran Cicilan: Rp {{ number_format($cicilan, 0, ',', '.') ?? 0 }}</h5>
+    <h5>jangka Waktu: {{ $jangka_waktu ?? "-" }} / Bulan</h5>
     <table>
         <thead>
             <tr>
