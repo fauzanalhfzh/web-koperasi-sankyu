@@ -15,8 +15,10 @@
 <body>
     <h2>Laporan Keuangan Anggota KPT Sankyu</h2>
     <p>Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
-    <p>Nama Anggota: <strong>{{ $anggota->nama_lengkap ?? '-' }}</strong></p>
     <p>No. Anggota: <strong>{{ $anggota->id ?? '-' }}</strong></p>
+    <p>Nama Anggota: <strong>{{ $anggota->nama_lengkap ?? '-' }}</strong></p>
+    <p>Job Site: <strong>{{ $anggota->site ?? '-' }}</strong></p>
+    <p>Positions: <strong>{{ $anggota->jabatan ?? '-' }}</strong></p>
 
     <h3>Data Simpanan</h3>
     <table>
@@ -67,7 +69,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
                     <td>Rp {{ number_format($item->cicilan, 0, ',', '.') }}</td>
-                    <td>{{ $item->bunga }}</td>
+                    <td>0.8%</td>
                     <td>{{ ucfirst($item->status_pinjaman) }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}</td>
                 </tr>

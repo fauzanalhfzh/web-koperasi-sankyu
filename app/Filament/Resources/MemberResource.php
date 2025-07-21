@@ -49,9 +49,16 @@ class MemberResource extends Resource
                 Forms\Components\TextInput::make('jabatan')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('site')
+                Forms\Components\Select::make('site')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        'MCCI' => 'MCCI',
+                        'KNSS' => 'KNSS',
+                        'ASC' => 'ASC',
+                        'KOS' => 'KOS',
+                        'SLI' => 'SLI',
+                        'BRANCH' => 'BRANCH',
+                    ]),
                 Forms\Components\TextInput::make('gaji_pokok')
                     ->required()
                     ->numeric(),

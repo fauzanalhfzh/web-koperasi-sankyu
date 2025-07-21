@@ -21,10 +21,10 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Anggota</th>
-                <th>Jenis Simpanan</th>
-                <th>Jumlah Simpanan</th>
                 <th>Tanggal Simpanan</th>
+                <th>Nama Anggota</th>
+                <th>Jumlah Simpanan</th>
+                <th>Jenis Simpanan</th>
             </tr>
         </thead>
         <tbody>
@@ -32,50 +32,16 @@
             @foreach($simpanan as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->member->nama_lengkap ?? '-' }}</td>
-                    <td>{{ ucfirst($item->jenis_simpanan) }}</td>
-                    <td>Rp {{ number_format($item->jumlah_simpanan, 0, ',', '.') }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
+                    <td>{{ $item->member->nama_lengkap ?? '-' }}</td>
+                    <td>Rp {{ number_format($item->jumlah_simpanan, 0, ',', '.') }}</td>
+                    <td>{{ ucfirst($item->jenis_simpanan) }}</td>
                 </tr>
                 @php $totalSimpanan += $item->jumlah_simpanan; @endphp
             @endforeach
             <tr>
                 <th colspan="3">Total Simpanan</th>
                 <th colspan="2">Rp {{ number_format($totalSimpanan, 0, ',', '.') }}</th>
-            </tr>
-        </tbody>
-    </table>
-
-    <h3>Data Pinjaman Seluruh Anggota</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Anggota</th>
-                <th>Jumlah Pinjaman</th>
-                <th>Cicilan</th>
-                <th>Bunga (%)</th>
-                <th>Status</th>
-                <th>Tanggal Pinjaman</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $totalPinjaman = 0; @endphp
-            @foreach($pinjaman as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->member->nama_lengkap ?? '-' }}</td>
-                    <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->cicilan, 0, ',', '.') }}</td>
-                    <td>{{ $item->bunga }}</td>
-                    <td>{{ ucfirst($item->status_pinjaman) }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}</td>
-                </tr>
-                @php $totalPinjaman += $item->jumlah_pinjaman; @endphp
-            @endforeach
-            <tr>
-                <th colspan="2">Total Pinjaman</th>
-                <th colspan="5">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</th>
             </tr>
         </tbody>
     </table>

@@ -8,13 +8,12 @@ use Mpdf\Mpdf;
 
 class laporanTransaksiController extends Controller
 {
-    public function laporan_transaksi()
+    public function laporan_transaksi_pinjaman()
     {
-        $simpanan = \App\Models\Saving::with('member')->get();
         $pinjaman = \App\Models\Loan::with('member')->get();
 
         // Render Blade view menjadi HTML string
-        $html = view('generate-pdf.laporan-transaksi', compact('simpanan', 'pinjaman'))->render();
+        $html = view('generate-pdf.laporan-transaksi-pinjaman', compact('pinjaman'))->render();
 
         // Buat instance mPDF
         $mpdf = new Mpdf();
@@ -23,7 +22,25 @@ class laporanTransaksiController extends Controller
         $mpdf->WriteHTML($html);
 
         // Output PDF langsung ke browser
-        return response($mpdf->Output('laporan-transaksi.pdf', 'I'), 200)
+        return response($mpdf->Output('laporan-transaksi-pinjaman.pdf', 'I'), 200)
+            ->header('Content-Type', 'application/pdf');
+    }
+
+    public function laporan_transaksi_simpanan()
+    {
+        $simpanan = \App\Models\Saving::with('member')->get();
+
+        // Render Blade view menjadi HTML string
+        $html = view('generate-pdf.laporan-transaksi-simpanan', compact('simpanan'))->render();
+
+        // Buat instance mPDF
+        $mpdf = new Mpdf();
+
+        // Tulis HTML ke PDF
+        $mpdf->WriteHTML($html);
+
+        // Output PDF langsung ke browser
+        return response($mpdf->Output('laporan-transaksi-simpanan.pdf', 'I'), 200)
             ->header('Content-Type', 'application/pdf');
     }
 
