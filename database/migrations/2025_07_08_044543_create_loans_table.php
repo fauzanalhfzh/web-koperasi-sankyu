@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('tanggal_pengajuan');
             $table->integer('jangka_waktu');
             $table->integer('cicilan');
-            $table->integer('bunga');
+            $table->float('bunga');
             $table->enum('status_pinjaman', ['lunas', 'belum_lunas'])->default('belum_lunas');
             $table->enum('status_pengajuan', ['pending', 'diterima', 'ditolak'])->default('pending');
             $table->timestamps();
