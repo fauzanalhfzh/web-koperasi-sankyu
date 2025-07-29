@@ -24,8 +24,6 @@
             </div>
             <nav class="px-4 space-y-2">
                 <a href="#" class="block px-4 py-2 rounded hover:bg-blue-100">Dashboard</a>
-                <a href="#" class="block px-4 py-2 rounded hover:bg-blue-100">Simpanan</a>
-                <a href="#" class="block px-4 py-2 rounded hover:bg-blue-100">Pinjaman</a>
             </nav>
         </aside>
 

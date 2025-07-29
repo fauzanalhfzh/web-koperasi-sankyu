@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard Pengajuan Pinjaman</title>
+    <title>Dashboard Steering Committee - Koperasi PT. Sankyu</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -16,7 +16,7 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white shadow-md hidden md:block">
             <div class="p-6 text-blue-800 font-bold text-xl">
-                Admin Koperasi
+                Steering Committee
             </div>
             <nav class="px-4 space-y-2">
                 <a href="#" class="block px-4 py-2 rounded hover:bg-blue-100">Dashboard</a>
@@ -26,6 +26,21 @@
 
         <!-- Main content -->
         <main class="flex-1 p-6">
+            <!-- Statistik -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-blue-100 p-6 rounded-lg shadow text-center">
+                    <div class="text-lg font-semibold text-blue-700 mb-2">Total Simpanan</div>
+                    <div class="text-3xl font-bold text-blue-900">
+                        Rp {{ number_format($totalSimpanan ?? 0, 0, ',', '.') }}
+                    </div>
+                </div>
+                <div class="bg-red-100 p-6 rounded-lg shadow text-center">
+                    <div class="text-lg font-semibold text-red-700 mb-2">Total Pinjaman</div>
+                    <div class="text-3xl font-bold text-red-900">
+                        Rp {{ number_format($totalPinjaman ?? 0, 0, ',', '.') }}
+                    </div>
+                </div>
+            </div>
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-2xl font-bold">Daftar Pengajuan Pinjaman</h1>
                 <form method="POST" action="{{ route('logout') }}">
@@ -51,6 +66,7 @@
                                 <th class="px-6 py-3 text-left text-gray-500 font-medium">Tanggal Pengajuan</th>
                                 <th class="px-6 py-3 text-left text-gray-500 font-medium">Nama Anggota</th>
                                 <th class="px-6 py-3 text-left text-gray-500 font-medium">Jumlah Pinjaman</th>
+                                <th class="px-6 py-3 text-left text-gray-500 font-medium">Jangka Waktu</th>
                                 <th class="px-6 py-3 text-left text-gray-500 font-medium">Cicilan</th>
                                 <th class="px-6 py-3 text-left text-gray-500 font-medium">Status Pengajuan</th>
                                 <th class="px-6 py-3 text-left text-gray-500 font-medium">Aksi</th
@@ -62,9 +78,15 @@
                                 <td class="px-6 py-4">{{ \Carbon\Carbon::parse($p->tanggal_pengajuan)->format('d-m-Y') }}</td>
                                 <td class="px-6 py-4">{{ $p->member->nama_lengkap ?? '-' }}</td>
                                 <td class="px-6 py-4">Rp {{ number_format($p->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4">{{ $p->jangka_waktu . " Bulan" ?? '-' }}</td>
                                 <td class="px-6 py-4">Rp {{ number_format($p->cicilan, 0, ',', '.') }}</td>
                                 <td class="px-6 py-4 capitalize">{{ $p->status_pengajuan }}</td>
                                 <td class="px-6 py-4 space-x-2">
+                                    <a href="{{ route('sc.riwayat-pinjaman.anggota', $p->member_id) }}"
+                                        target="_blank"
+                                        class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm inline-block">
+                                        Riwayat
+                                    </a>
                                     <form method="POST" action="{{ route('pinjaman.diterima', $p->id) }}" class="inline">
                                         @csrf
                                         <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm">

@@ -21,10 +21,12 @@ Route::prefix('sc')->name('sc.')->group(function () {
 
     Route::middleware('auth:sc')->group(function () {
         Route::get('dashboard', [SteeringCommitteeController::class, 'index'])->name('dashboard');
+        Route::get('riwayat-pinjaman/{member}', [SteeringCommitteeController::class, 'riwayatPinjamanAnggota'])->name('riwayat-pinjaman.anggota');
         Route::post('loan/{loan}/approve', [SteeringCommitteeController::class, 'approve'])->name('loan.approve');
         Route::post('loan/{loan}/reject', [SteeringCommitteeController::class, 'reject'])->name('loan.reject');
     });
 });
+
 
 Route::post('/pinjaman/{id}/diterima', [LoanController::class, 'diterima'])->name('pinjaman.diterima');
 Route::post('/pinjaman/{id}/ditolak', [LoanController::class, 'ditolak'])->name('pinjaman.ditolak');

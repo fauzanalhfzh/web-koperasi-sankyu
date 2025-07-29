@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Member;
+use App\Models\Saving;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -31,11 +33,16 @@ class SteeringCommitteeController extends Controller
 
     public function index()
     {
+        $totalSimpanan = Saving::sum('jumlah_simpanan');
+
+        $totalPinjaman = Loan::where('status_pengajuan', 'diterima')
+            ->sum('jumlah_pinjaman');
+
         $pengajuanPinjaman = Loan::with('member')
             ->where('status_pengajuan', 'pending')
             ->get();
 
-        return view('sc.dashboard-steering', compact('pengajuanPinjaman'));
+        return view('sc.dashboard-steering', compact('pengajuanPinjaman', 'totalSimpanan', 'totalPinjaman'));
     }
 
     // Logout SC
@@ -50,6 +57,17 @@ class SteeringCommitteeController extends Controller
     {
         $pengajuan = Loan::where('status_pengajuan', 'pending')->get();
         return view('sc.dashboard', compact('pengajuan'));
+    }
+
+    public function riwayatPinjamanAnggota($memberId)
+    {
+        $member = Member::findOrFail($memberId);
+
+        $riwayatPinjaman = Loan::where('member_id', $memberId)
+            ->orderBy('tanggal_pengajuan', 'desc')
+            ->get();
+
+        return view('sc.riwayat-pinjaman-anggota', compact('member', 'riwayatPinjaman'));
     }
 
     // Approve pinjaman
