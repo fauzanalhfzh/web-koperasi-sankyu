@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'sc' => [
+            'driver' => 'session',
+            'provider' => 'steering_committees',
+        ],
     ],
 
     /*
@@ -63,6 +67,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'steering_committees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SteeringCommittee::class,
         ],
 
         // 'users' => [

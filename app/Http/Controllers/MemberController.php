@@ -13,33 +13,43 @@ class MemberController
         return view('welcome');
     }
 
+
     public function dashboardAnggota()
     {
         $memberId = session('member_id');
         $member = Member::find($memberId);
 
-        // Sum total simpanan dari tabel simpanan (misal: savings)
         $totalSimpanan = 0;
+        $totalPinjaman = 0;
+        $cicilanPerbulan = 0;
+        $riwayatSimpanan = [];
+        $riwayatPinjaman = [];
+
         if ($member) {
             $totalSimpanan = \App\Models\Saving::where('member_id', $member->id)->sum('jumlah_simpanan');
+
             $totalPinjaman = \App\Models\Loan::where('member_id', $member->id)
                 ->where('status_pinjaman', 'belum_lunas')
                 ->sum('jumlah_pinjaman');
+
             $cicilanPerbulan = \App\Models\Loan::where('member_id', $member->id)
                 ->where('status_pinjaman', 'belum_lunas')
                 ->sum('cicilan');
-        } else {
-            $totalSimpanan = 0;
-            $totalPinjaman = 0;
-            $cicilanPerbulan = 0;
+
+            // Ambil riwayat
+            $riwayatSimpanan = \App\Models\Saving::where('member_id', $member->id)->latest()->get();
+            $riwayatPinjaman = \App\Models\Loan::where('member_id', $member->id)->latest()->get();
         }
 
         return view('dashboard-anggota', [
             'totalSimpanan' => $totalSimpanan,
             'totalPinjaman' => $totalPinjaman,
             'cicilanPerbulan' => $cicilanPerbulan,
+            'riwayatSimpanan' => $riwayatSimpanan,
+            'riwayatPinjaman' => $riwayatPinjaman,
         ]);
     }
+
 
     public function login(Request $request)
     {

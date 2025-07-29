@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\SteeringCommitteeResource\Pages;
+use App\Filament\Resources\SteeringCommitteeResource\RelationManagers;
+use App\Models\SteeringCommittee;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,54 +12,38 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Hash;
 
-class UserResource extends Resource
+class SteeringCommitteeResource extends Resource
 {
+    protected static ?string $model = SteeringCommittee::class;
 
-    protected static ?string $model = User::class;
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $label = 'Steering Committee';
 
-    protected static ?string $navigationLabel = 'Manager Users';
-
-    protected static ?string $label = 'Manager Users';
+    protected static ?string $navigationLabel = 'Steering Committees';
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Nama Lengkap')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
-                    ->label('Email')
                     ->email()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
-                    ->label('Password')
                     ->password()
-                    ->nullable()
-                    ->dehydrateStateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
+                    ->required()
                     ->maxLength(255),
             ]);
-    }
-
-    public static function mutateFormDataBeforeSave(array $data): array
-    {
-        if (empty($data['password'])) {
-            unset($data['password']); // hapus password kalau kosong, biar gak diupdate
-        }
-        return $data;
     }
 
     public static function table(Table $table): Table
@@ -67,19 +51,18 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Lengkap')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('role')
-                    ->label('Role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -110,10 +93,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListSteeringCommittees::route('/'),
+            'create' => Pages\CreateSteeringCommittee::route('/create'),
+            'view' => Pages\ViewSteeringCommittee::route('/{record}'),
+            'edit' => Pages\EditSteeringCommittee::route('/{record}/edit'),
         ];
     }
 
