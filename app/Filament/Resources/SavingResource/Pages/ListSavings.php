@@ -17,6 +17,12 @@ class ListSavings extends ListRecords
             Actions\CreateAction::make()
                 ->label('Tambah Simpanan')
                 ->icon('heroicon-o-plus'),
+            Actions\Action::make('generate_laporan')
+                ->label('Cetak Laporan')
+                ->color('success')
+                ->icon('heroicon-o-document-text')
+                ->url(fn() => route('laporan-transaksi-simpanan'))
+                ->openUrlInNewTab(),
         ];
     }
 
