@@ -39,7 +39,40 @@
                     </button>
                 </form>
             </div>
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Informasi Anggota</h2>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Nama Anggota</p>
+                        <p class="text-base font-medium text-gray-800">{{ $member->nama_lengkap ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Email</p>
+                        <p class="text-base font-medium text-gray-800">{{ $member->email ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Nomor Induk Kependudukan</p>
+                        <p class="text-base font-medium text-gray-800">{{ $member->nik ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">No Rekening</p>
+                        <p class="text-base font-medium text-gray-800">{{ $member->no_rekening ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Job Site</p>
+                        <p class="text-base font-medium text-gray-800">{{ $member->site ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Jabatan</p>
+                        <p class="text-base font-medium text-gray-800">{{ $member->jabatan ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Gaji Pokok</p>
+                        <p class="text-base font-medium text-gray-800">Rp {{ number_format($member->gaji_pokok ?? 0, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+            </div>
             <!-- Statistik -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-blue-100 p-6 rounded-lg shadow text-center">

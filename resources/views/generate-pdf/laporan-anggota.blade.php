@@ -1,22 +1,49 @@
 <!-- filepath: c:\xampp\htdocs\web-koperasi-sankyu\resources\views\generate-pdf\laporan-transakaksi.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Laporan Keuangan Anggota KPT Sankyu</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; }
-        h2 { text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
-        th, td { border: 1px solid #333; padding: 6px 8px; text-align: left; }
-        th { background: #eee; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        th,
+        td {
+            border: 1px solid #333;
+            padding: 6px 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #eee;
+        }
     </style>
 </head>
+
 <body>
-    <h2>Laporan Keuangan Anggota KPT Sankyu</h2>
+    <h2>Laporan Simpanan & Pinjaman Anggota Koperasi</h2>
+    <h2>Karyawan PT Sankyu Internasional Indonesia</h2>
     <p>Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
-    <p>No. Anggota: <strong>{{ $anggota->id ?? '-' }}</strong></p>
     <p>Nama Anggota: <strong>{{ $anggota->nama_lengkap ?? '-' }}</strong></p>
+    <p>Email: <strong>{{ $anggota->email ?? '-' }}</strong></p>
+    <p>Nomor Induk Kependudukan: <strong>{{ $anggota->nik ?? '-' }}</strong></p>
+    <p>Nomor Rekening: <strong>{{ $anggota->no_rekening ?? '-' }}</strong></p>
     <p>Job Site: <strong>{{ $anggota->site ?? '-' }}</strong></p>
     <p>Positions: <strong>{{ $anggota->jabatan ?? '-' }}</strong></p>
 
@@ -33,13 +60,13 @@
         <tbody>
             @php $totalSimpanan = 0; @endphp
             @foreach($simpanan as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ ucfirst($item->jenis_simpanan) }}</td>
-                    <td>Rp {{ number_format($item->jumlah_simpanan, 0, ',', '.') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
-                </tr>
-                @php $totalSimpanan += $item->jumlah_simpanan; @endphp
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ ucfirst($item->jenis_simpanan) }}</td>
+                <td>Rp {{ number_format($item->jumlah_simpanan, 0, ',', '.') }}</td>
+                <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
+            </tr>
+            @php $totalSimpanan += $item->jumlah_simpanan; @endphp
             @endforeach
             <tr>
                 <th colspan="2">Total Simpanan</th>
@@ -65,15 +92,15 @@
         <tbody>
             @php $totalPinjaman = 0; @endphp
             @foreach($pinjaman as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->cicilan, 0, ',', '.') }}</td>
-                    <td>0.8%</td>
-                    <td>{{ ucfirst($item->status_pinjaman) }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}</td>
-                </tr>
-                @php $totalPinjaman += $item->jumlah_pinjaman; @endphp
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                <td>Rp {{ number_format($item->cicilan, 0, ',', '.') }}</td>
+                <td>0.8%</td>
+                <td>{{ ucfirst($item->status_pinjaman) }}</td>
+                <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}</td>
+            </tr>
+            @php $totalPinjaman += $item->jumlah_pinjaman; @endphp
             @endforeach
             <tr>
                 <th>Total Pinjaman</th>
@@ -82,4 +109,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

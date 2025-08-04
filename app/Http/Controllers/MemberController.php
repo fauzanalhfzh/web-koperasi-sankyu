@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Loan;
 use App\Models\Member;
+use App\Models\Saving;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,7 +12,7 @@ class MemberController
 {
     public function showLoginForm()
     {
-        return view('welcome');
+        return view('auth.login');
     }
 
 
@@ -26,22 +28,23 @@ class MemberController
         $riwayatPinjaman = [];
 
         if ($member) {
-            $totalSimpanan = \App\Models\Saving::where('member_id', $member->id)->sum('jumlah_simpanan');
+            $totalSimpanan = Saving::where('member_id', $member->id)->sum('jumlah_simpanan');
 
-            $totalPinjaman = \App\Models\Loan::where('member_id', $member->id)
+            $totalPinjaman = Loan::where('member_id', $member->id)
                 ->where('status_pinjaman', 'belum_lunas')
                 ->sum('jumlah_pinjaman');
 
-            $cicilanPerbulan = \App\Models\Loan::where('member_id', $member->id)
+            $cicilanPerbulan = Loan::where('member_id', $member->id)
                 ->where('status_pinjaman', 'belum_lunas')
                 ->sum('cicilan');
 
             // Ambil riwayat
-            $riwayatSimpanan = \App\Models\Saving::where('member_id', $member->id)->latest()->get();
-            $riwayatPinjaman = \App\Models\Loan::where('member_id', $member->id)->latest()->get();
+            $riwayatSimpanan = Saving::where('member_id', $member->id)->latest()->get();
+            $riwayatPinjaman = Loan::where('member_id', $member->id)->latest()->get();
         }
 
         return view('dashboard-anggota', [
+            'member' => $member,
             'totalSimpanan' => $totalSimpanan,
             'totalPinjaman' => $totalPinjaman,
             'cicilanPerbulan' => $cicilanPerbulan,

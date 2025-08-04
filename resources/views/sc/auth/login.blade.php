@@ -9,9 +9,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen">
+<body class="bg-blue-900 font-sans flex items-center justify-center min-h-screen">
 
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <div class="flex justify-center mb-6">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-36 w-auto">
+        </div>
         <h1 class="text-2xl font-bold text-center text-blue-800 mb-6">Login Steering Committee</h1>
 
         @if(session('error'))
