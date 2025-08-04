@@ -88,7 +88,8 @@ class SavingResource extends Resource
                     ->label('Nominal Simpanan')
                     ->prefix('Rp.')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('tanggal_transaksi')
                     ->label('Tanggal Transaksi')
                     ->date()
@@ -100,6 +101,7 @@ class SavingResource extends Resource
                     ->label('Tanggal Dibuat')
                     ->dateTime()
                     ->sortable()
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label('Tanggal Diubah')

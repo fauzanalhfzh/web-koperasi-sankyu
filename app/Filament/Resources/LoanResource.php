@@ -121,22 +121,29 @@ class LoanResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('member.nama_lengkap')
-                    ->sortable(),
+                    ->sortable()
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('jumlah_pinjaman')
                     ->prefix('Rp.')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('cicilan')
                     ->prefix('Rp.')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_pengajuan')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jangka_waktu')
                     ->suffix(' Bulan')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\SelectColumn::make('status_pinjaman')
+                    ->searchable()
                     ->options([
                         'lunas' => 'Lunas',
                         'belum_lunas' => 'Belum Lunas',
@@ -145,8 +152,10 @@ class LoanResource extends Resource
                 Tables\Columns\TextColumn::make('bunga')
                     ->suffix('%')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\SelectColumn::make('status_pengajuan')
+                    ->searchable()
                     ->options([
                         'pending' => 'Pending',
                         'diterima' => 'Diterima',
@@ -156,6 +165,7 @@ class LoanResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()

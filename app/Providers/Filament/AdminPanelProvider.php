@@ -2,7 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\LoadResource\Widgets\PinjamanChart;
+use App\Filament\Resources\LoanResource\Widgets\StatsLoanWidget;
 use App\Filament\Resources\MemberResource\Widgets\MemberStatsOverview;
+use App\Filament\Resources\SavingResource\Widgets\SimpananChart;
+use App\Filament\Resources\SavingResource\Widgets\StatsSavingWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -42,7 +46,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                SimpananChart::class,
+                PinjamanChart::class
             ])
             ->middleware([
                 EncryptCookies::class,
