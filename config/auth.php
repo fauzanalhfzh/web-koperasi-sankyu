@@ -44,7 +44,12 @@ return [
             'driver' => 'session',
             'provider' => 'steering_committees',
         ],
+        'member' => [ // 🔹 tambahan ini
+            'driver' => 'session',
+            'provider' => 'members',
+        ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -72,11 +77,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\SteeringCommittee::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'members' => [ // 🔹 tambahan ini
+            'driver' => 'eloquent',
+            'model' => App\Models\Member::class,
+        ],
     ],
 
     /*

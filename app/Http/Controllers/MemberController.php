@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\Member;
 use App\Models\Saving;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class MemberController
@@ -18,41 +19,37 @@ class MemberController
 
     public function dashboardAnggota()
     {
-        $memberId = session('member_id');
-        $member = Member::find($memberId);
+        // Ambil member yang sedang login lewat guard 'member'
+        $member = Auth::guard('member')->user();
 
-        $totalSimpanan = 0;
-        $totalPinjaman = 0;
-        $cicilanPerbulan = 0;
-        $riwayatSimpanan = [];
-        $riwayatPinjaman = [];
-
-        if ($member) {
-            $totalSimpanan = Saving::where('member_id', $member->id)->sum('jumlah_simpanan');
-
-            $totalPinjaman = Loan::where('member_id', $member->id)
-                ->where('status_pinjaman', 'belum_lunas')
-                ->sum('jumlah_pinjaman');
-
-            $cicilanPerbulan = Loan::where('member_id', $member->id)
-                ->where('status_pinjaman', 'belum_lunas')
-                ->sum('cicilan');
-
-            // Ambil riwayat
-            $riwayatSimpanan = Saving::where('member_id', $member->id)->latest()->get();
-            $riwayatPinjaman = Loan::where('member_id', $member->id)->latest()->get();
+        if (!$member) {
+            return redirect()->route('login')->withErrors(['Anda harus login terlebih dahulu.']);
         }
 
+        // Hitung total simpanan, pinjaman, dan cicilan
+        $totalSimpanan = $member->simpanan()->sum('jumlah_simpanan');
+
+        $totalPinjaman = $member->pinjaman()
+            ->where('status_pinjaman', 'belum_lunas')
+            ->sum('jumlah_pinjaman');
+
+        $cicilanPerbulan = $member->pinjaman()
+            ->where('status_pinjaman', 'belum_lunas')
+            ->sum('cicilan');
+
+        // Ambil riwayat simpanan & pinjaman
+        $riwayatSimpanan = $member->simpanan()->latest()->get();
+        $riwayatPinjaman = $member->pinjaman()->latest()->get();
+
         return view('dashboard-anggota', [
-            'member' => $member,
-            'totalSimpanan' => $totalSimpanan,
-            'totalPinjaman' => $totalPinjaman,
+            'member'          => $member,
+            'totalSimpanan'   => $totalSimpanan,
+            'totalPinjaman'   => $totalPinjaman,
             'cicilanPerbulan' => $cicilanPerbulan,
             'riwayatSimpanan' => $riwayatSimpanan,
             'riwayatPinjaman' => $riwayatPinjaman,
         ]);
     }
-
 
     public function login(Request $request)
     {
@@ -61,20 +58,25 @@ class MemberController
             'password' => 'required',
         ]);
 
-        // Cek kredensial di tabel member
-        $member = Member::where('email', $request->email)->first();
-        if ($member && Hash::check($request->password, $member->password)) {
-            // Simpan session login manual
-            session(['member_id' => $member->id]);
-            return redirect()->intended('/dashboard-anggota'); // Ganti sesuai halaman dashboard Anda
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('member')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard-anggota');
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah']);
+        return back()->withErrors([
+            'email' => 'Email atau password salah',
+        ]);
     }
+
 
     public function logout(Request $request)
     {
-        $request->session()->forget('member_id');
-        return redirect('/login');
+        Auth::guard('member')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

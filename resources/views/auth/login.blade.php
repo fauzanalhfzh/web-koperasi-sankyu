@@ -23,7 +23,7 @@
         </div>
         <h1 class="text-4xl font-bold mb-2 text-center">KOPERASI KARYAWAN</h1>
         <h1 class="text-3xl font-semibold mb-6 text-center">PT. Sankyu Indonesia International </h1>
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login.submit') }}">
             @csrf
             <div class="mb-5">
                 <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>

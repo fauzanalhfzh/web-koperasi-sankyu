@@ -3,17 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable; // ✅ ganti base class
+use Illuminate\Notifications\Notifiable;
 
-class Member extends Model
+class Member extends Authenticatable
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, Notifiable; // ✅ tambahkan Notifiable kalau mau pakai fitur notifikasi
 
     protected $guarded = [];
 
     protected $dates = ['tanggal_simpanan', 'tanggal_pinjaman'];
 
+    protected $hidden = [
+        'password',
+        'remember_token', // ✅ biar aman saat serialize
+    ];
 
     public function simpanan()
     {
