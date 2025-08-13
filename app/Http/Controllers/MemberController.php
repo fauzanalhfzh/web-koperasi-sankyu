@@ -7,9 +7,10 @@ use App\Models\Member;
 use App\Models\Saving;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class MemberController
+class MemberController  extends Controller
 {
     public function showLoginForm()
     {
@@ -19,7 +20,7 @@ class MemberController
 
     public function dashboardAnggota()
     {
-        // Ambil member yang sedang login lewat guard 'member'
+        // Ambil member yang sedang login lewat guard 'members'
         $member = Auth::guard('member')->user();
 
         if (!$member) {
@@ -60,10 +61,16 @@ class MemberController
 
         $credentials = $request->only('email', 'password');
 
+        // 🔹 Debug credentials
+        logger('Login credentials:', $credentials);
+
         if (Auth::guard('member')->attempt($credentials)) {
             $request->session()->regenerate();
+            logger('Login successful for member: ' . $request->email);
             return redirect()->intended('/dashboard-anggota');
         }
+
+        logger('Login failed for member: ' . $request->email);
 
         return back()->withErrors([
             'email' => 'Email atau password salah',

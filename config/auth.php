@@ -44,7 +44,7 @@ return [
             'driver' => 'session',
             'provider' => 'steering_committees',
         ],
-        'member' => [ // 🔹 tambahan ini
+        'member' => [
             'driver' => 'session',
             'provider' => 'members',
         ],

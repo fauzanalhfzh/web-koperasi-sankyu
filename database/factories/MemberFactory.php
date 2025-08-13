@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Member>
@@ -26,7 +27,7 @@ class MemberFactory extends Factory
             'site' => $this->faker->randomElement(['Cilegon', 'Jakarta', 'Karawang']),
             'gaji_pokok' => $this->faker->numberBetween(3000000, 10000000),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => bcrypt('password123'), // default password
+            'password' => Hash::make('password123'), // default password
         ];
     }
 }

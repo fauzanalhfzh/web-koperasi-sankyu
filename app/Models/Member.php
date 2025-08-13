@@ -17,7 +17,7 @@ class Member extends Authenticatable
 
     protected $hidden = [
         'password',
-        'remember_token', // ✅ biar aman saat serialize
+        'remember_token'
     ];
 
     public function simpanan()
