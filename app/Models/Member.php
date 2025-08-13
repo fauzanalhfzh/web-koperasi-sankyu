@@ -15,6 +15,11 @@ class Member extends Authenticatable
 
     protected $fillable = [
         'nama_lengkap',
+        'nik',
+        'no_rekening',
+        'jabatan',
+        'site',
+        'gaji_pokok',
         'email',
         'password',
     ];
