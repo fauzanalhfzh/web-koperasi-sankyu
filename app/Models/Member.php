@@ -14,7 +14,7 @@ class Member extends Authenticatable
     protected $dates = ['tanggal_simpanan', 'tanggal_pinjaman'];
 
     protected $fillable = [
-        'name',
+        'nama_lengkap',
         'email',
         'password',
     ];
