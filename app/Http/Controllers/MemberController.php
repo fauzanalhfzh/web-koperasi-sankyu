@@ -67,7 +67,7 @@ class MemberController  extends Controller
         if (Auth::guard('member')->attempt($credentials)) {
             $request->session()->regenerate();
             logger('Login successful for member: ' . $request->email);
-            return redirect()->intended('/dashboard-anggota');
+            return redirect()->route('dashboard-anggota');
         }
 
         logger('Login failed for member: ' . $request->email);

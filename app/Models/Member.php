@@ -11,9 +11,13 @@ class Member extends Authenticatable
 {
     use SoftDeletes, HasFactory, Notifiable; // ✅ tambahkan Notifiable kalau mau pakai fitur notifikasi
 
-    protected $guarded = [];
-
     protected $dates = ['tanggal_simpanan', 'tanggal_pinjaman'];
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
 
     protected $hidden = [
         'password',
