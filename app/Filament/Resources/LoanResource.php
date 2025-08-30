@@ -113,6 +113,9 @@ class LoanResource extends Resource
                     ->grouped()
                     ->default('pending')
                     ->required(),
+                Forms\Components\DatePicker::make('tanggal_pengajuan')
+                    ->label('Tanggal Pengajuan')
+                    ->nullable(),
             ]);
     }
 
@@ -161,6 +164,10 @@ class LoanResource extends Resource
                         'diterima' => 'Diterima',
                         'ditolak' => 'Ditolak',
                     ])
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tanggal_persetujuan')
+                    ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

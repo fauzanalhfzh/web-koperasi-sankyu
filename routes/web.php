@@ -24,6 +24,8 @@ Route::prefix('sc')->name('sc.')->group(function () {
         Route::get('riwayat-pinjaman/{member}', [SteeringCommitteeController::class, 'riwayatPinjamanAnggota'])->name('riwayat-pinjaman.anggota');
         Route::post('loan/{loan}/approve', [SteeringCommitteeController::class, 'approve'])->name('loan.approve');
         Route::post('loan/{loan}/reject', [SteeringCommitteeController::class, 'reject'])->name('loan.reject');
+        Route::get('/pinjaman/edit/{id}', [SteeringCommitteeController::class, 'edit'])->name('edit-pinjaman');
+        Route::post('/pinjaman/edit/{id}', [SteeringCommitteeController::class, 'update'])->name('update-pinjaman');
     });
 });
 

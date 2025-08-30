@@ -1,10 +1,10 @@
-<!-- filepath: c:\xampp\htdocs\web-koperasi-sankyu\resources\views\generate-pdf\laporan-transakaksi.blade.php -->
+<!-- resources/views/generate-pdf/laporan-transaksi-pinjaman.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Keuangan KPT Sankyu</title>
+    <title>Laporan Pinjaman Anggota</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,7 +36,13 @@
 
 <body>
     <h2>Laporan Pinjaman Anggota Koperasi Karyawan PT Sankyu Internasional Indonesia</h2>
-    <p>Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
+    <p>Bulan:
+        @if ($bulan == 'all')
+        Seluruh Tahun {{ $tahun }}
+        @else
+        {{ \Carbon\Carbon::createFromFormat('m', $bulan)->format('F') }} {{ $tahun }}
+        @endif
+    </p>
 
     <h3>Data Pinjaman Seluruh Anggota</h3>
     <table>

@@ -18,10 +18,22 @@ class ListLoans extends ListRecords
                 ->label('Tambah Pinjaman')
                 ->icon('heroicon-o-plus'),
             Actions\Action::make('generate_laporan')
-                ->label('Cetak Laporan')
+                ->label('Cetak Semua Laporan')
                 ->color('success')
                 ->icon('heroicon-o-document-text')
                 ->url(fn() => route('laporan-transaksi-pinjaman'))
+                ->openUrlInNewTab(),
+            Actions\Action::make('generate_laporan_pinjaman_bulan')
+                ->label('Cetak Laporan Pinjaman Per Bulan')
+                ->color('success')
+                ->icon('heroicon-o-document-text')
+                ->url(fn() => route('laporan-transaksi-pinjaman', ['bulan' => now()->format('m'), 'tahun' => now()->format('Y')]))
+                ->openUrlInNewTab(),
+            Actions\Action::make('generate_laporan_pinjaman_tahun')
+                ->label('Cetak Laporan Pinjaman Per Tahun')
+                ->color('success')
+                ->icon('heroicon-o-document-text')
+                ->url(fn() => route('laporan-transaksi-pinjaman', ['bulan' => 'all', 'tahun' => now()->format('Y')]))
                 ->openUrlInNewTab(),
         ];
     }

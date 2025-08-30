@@ -83,4 +83,34 @@ class SteeringCommitteeController extends Controller
         $loan->update(['status_pengajuan' => 'ditolak']);
         return back()->with('success', 'Pinjaman ditolak.');
     }
+
+    public function edit($id)
+    {
+        // Ambil data pinjaman berdasarkan ID
+        $pinjaman = Loan::findOrFail($id);
+
+        // Tampilkan halaman edit dengan data pinjaman
+        return view('sc.edit-pinjaman', compact('pinjaman'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi data yang dikirim dari form
+        $request->validate([
+            'jumlah_pinjaman' => 'required|numeric',
+            'jangka_waktu' => 'required|numeric',
+        ]);
+
+        // Cari data pinjaman
+        $pinjaman = Loan::findOrFail($id);
+
+        // Update data pinjaman
+        $pinjaman->update([
+            'jumlah_pinjaman' => $request->jumlah_pinjaman,
+            'jangka_waktu' => $request->jangka_waktu,
+        ]);
+
+        // Redirect kembali ke halaman pengajuan pinjaman
+        return redirect()->route('sc.dashboard')->with('success', 'Pinjaman berhasil diperbarui.');
+    }
 }

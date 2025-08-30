@@ -7,6 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Master extends Model
 {
-    /** @use HasFactory<\Database\Factories\MasterFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'saving_id',
+        'loan_id',
+        'jenis_simpanan',
+        'jumlah_simpanan',
+        'jumlah_pinjaman',
+    ];
+
+    public function simpanan()
+    {
+        return $this->belongsTo(Saving::class);
+    }
+
+    public function pinjaman()
+    {
+        return $this->belongsTo(Loan::class);
+    }
 }

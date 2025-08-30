@@ -1,70 +1,65 @@
-<!-- filepath: c:\xampp\htdocs\web-koperasi-sankyu\resources\views\generate-pdf\laporan-transakaksi.blade.php -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Keuangan KPT Sankyu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Transaksi Simpanan</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
-        }
-
-        h2 {
-            text-align: center;
+            margin: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 24px;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
         }
 
         th,
         td {
-            border: 1px solid #333;
-            padding: 6px 8px;
+            padding: 8px;
             text-align: left;
         }
 
         th {
-            background: #eee;
+            background-color: #f4f4f4;
         }
     </style>
 </head>
 
 <body>
-    <h2>Laporan Simpanan Anggota Koperasi Karyawan PT Sankyu Internasional Indonesia</h2>
-    <p>Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
-
-    <h3>Data Simpanan Seluruh Anggota</h3>
+    <h1>Laporan Transaksi Simpanan</h1>
+    <p>Bulan:
+        @if ($bulan == 'all')
+        Seluruh Tahun {{ $tahun }}
+        @else
+        {{ \Carbon\Carbon::createFromFormat('m', $bulan)->format('F') }} {{ $tahun }}
+        @endif
+    </p>
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Tanggal Simpanan</th>
+                <th>Tanggal Transaksi</th>
                 <th>Nama Anggota</th>
                 <th>Jumlah Simpanan</th>
-                <th>Jenis Simpanan</th>
             </tr>
         </thead>
         <tbody>
-            @php $totalSimpanan = 0; @endphp
-            @foreach($simpanan as $index => $item)
+            @foreach ($simpanan as $s)
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
-                <td>{{ $item->member->nama_lengkap ?? '-' }}</td>
-                <td>Rp {{ number_format($item->jumlah_simpanan, 0, ',', '.') }}</td>
-                <td>{{ ucfirst($item->jenis_simpanan) }}</td>
+                <td>{{ \Carbon\Carbon::parse($s->tanggal_transaksi)->format('d-m-Y') }}</td>
+                <td>{{ $s->member->nama_lengkap ?? '-' }}</td>
+                <td>Rp {{ number_format($s->jumlah_simpanan, 0, ',', '.') }}</td>
             </tr>
-            @php $totalSimpanan += $item->jumlah_simpanan; @endphp
             @endforeach
-            <tr>
-                <th colspan="3">Total Simpanan</th>
-                <th colspan="2">Rp {{ number_format($totalSimpanan, 0, ',', '.') }}</th>
-            </tr>
         </tbody>
     </table>
 </body>

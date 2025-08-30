@@ -87,6 +87,10 @@
                                         class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm inline-block">
                                         Riwayat
                                     </a>
+                                    <a href="{{ route('sc.edit-pinjaman', $p->id) }}"
+                                        class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-sm inline-block">
+                                        Edit
+                                    </a>
                                     <form method="POST" action="{{ route('pinjaman.diterima', $p->id) }}" class="inline">
                                         @csrf
                                         <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
@@ -100,6 +104,7 @@
                                         </button>
                                     </form>
                                 </td>
+
                             </tr>
                             @empty
                             <tr>

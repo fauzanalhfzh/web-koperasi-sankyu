@@ -20,6 +20,7 @@ class MemberFactory extends Factory
     public function definition(): array
     {
         return [
+            'nomor_anggota' => $this->faker->unique()->numerify('ANGGOTA-####'),
             'nama_lengkap' => $this->faker->name,
             'nik' => $this->faker->unique()->nik(),
             'no_rekening' => $this->faker->unique()->bankAccountNumber(),

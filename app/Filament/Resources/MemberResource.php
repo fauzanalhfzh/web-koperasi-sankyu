@@ -31,12 +31,14 @@ class MemberResource extends Resource
         return static::getModel()::count();
     }
 
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('nomor_anggota')
+                    ->label('Nomor Anggota')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('nama_lengkap')
                     ->required()
                     ->maxLength(255),
@@ -78,6 +80,9 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('nomor_anggota')
+                    ->label('Nomor Anggota')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')

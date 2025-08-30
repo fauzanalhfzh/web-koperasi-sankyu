@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Loan;
-use App\Models\Saving;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('masters', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Saving::class);
-            $table->string('jenis_simpanan');
-            $table->integer('jumlah_simpanan');
-            $table->timestamps();
+        Schema::table('loans', function (Blueprint $table) {
+            $table->date('tanggal_persetujuan')->nullable()->after('status_pengajuan');
         });
     }
 
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('masters');
+        Schema::table('steering_committees', function (Blueprint $table) {
+            $table->dropColumn('tanggal_persetujuan');
+        });
     }
 };
