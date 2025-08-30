@@ -14,6 +14,13 @@ class ListSavings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('add_simpanan_wajib_400rb')
+                ->label('Add Simpanan Wajib Otomatis')
+                ->color('warning')  // Warna kuning
+                ->icon('heroicon-o-plus-circle')
+                ->action(function () {
+                    $this->addSimpanan400rb(); // Aksi menambah simpanan
+                }),
             Actions\CreateAction::make()
                 ->label('Tambah Simpanan')
                 ->icon('heroicon-o-plus'),
@@ -44,5 +51,26 @@ class ListSavings extends ListRecords
         return [
             StatsSavingWidget::class
         ];
+    }
+
+    public function addSimpanan400rb()
+    {
+        $members = \App\Models\Member::all();
+
+        foreach ($members as $member) {
+            \App\Models\Saving::create([
+                'member_id' => $member->id,
+                'jenis_simpanan' => 'wajib',  // Tetapkan jenis_simpanan ke 'wajib'
+                'jumlah_simpanan' => 400000,  // Tetapkan jumlah_simpanan ke 400.000
+                'tanggal_transaksi' => now(),
+                'keterangan' => 'Simpanan Wajib 400rb',
+            ]);
+        }
+
+        // Return success notification
+        \Filament\Notifications\Notification::make()
+            ->title('Simpanan Wajib 400rb berhasil ditambahkan ke semua anggota.')
+            ->success()
+            ->send();
     }
 }

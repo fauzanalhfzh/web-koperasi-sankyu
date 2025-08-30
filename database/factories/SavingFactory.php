@@ -19,8 +19,8 @@ class SavingFactory extends Factory
     {
         return [
             'member_id' => Member::inRandomOrder()->first()->id,
-            'jenis_simpanan' => $this->faker->randomElement(['wajib', 'pokok']),
-            'jumlah_simpanan' => $this->faker->numberBetween(50000, 1000000),
+            'jenis_simpanan' => 'wajib',
+            'jumlah_simpanan' => 400000,
             'tanggal_transaksi' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'keterangan' => $this->faker->optional()->sentence(),
         ];
