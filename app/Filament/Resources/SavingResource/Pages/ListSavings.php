@@ -5,6 +5,9 @@ namespace App\Filament\Resources\SavingResource\Pages;
 use App\Filament\Resources\SavingResource;
 use App\Filament\Resources\SavingResource\Widgets\StatsSavingWidget;
 use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSavings extends ListRecords
@@ -24,18 +27,54 @@ class ListSavings extends ListRecords
             Actions\CreateAction::make()
                 ->label('Tambah Simpanan')
                 ->icon('heroicon-o-plus'),
-            Actions\Action::make('generate_laporan')
-                ->label('Cetak Semua Laporan')
+            // Actions\Action::make('generate_laporan')
+            //     ->label('Cetak Semua Laporan')
+            //     ->color('success')
+            //     ->icon('heroicon-o-document-text')
+            //     ->url(fn() => route('laporan-transaksi-simpanan'))
+            //     ->openUrlInNewTab(),
+            ActionGroup::make([
+                Action::make('pilih_bulan')
+                    ->label('Pilih Bulan')
+                    ->color('primary')
+                    ->icon('heroicon-o-calendar')
+                    ->form([
+                        Select::make('bulan')
+                            ->label('Bulan')
+                            ->options([
+                                '01' => 'Januari',
+                                '02' => 'Februari',
+                                '03' => 'Maret',
+                                '04' => 'April',
+                                '05' => 'Mei',
+                                '06' => 'Juni',
+                                '07' => 'Juli',
+                                '08' => 'Agustus',
+                                '09' => 'September',
+                                '10' => 'Oktober',
+                                '11' => 'November',
+                                '12' => 'Desember',
+                            ])
+                            ->default(now()->format('m')) // Set default ke bulan sekarang
+                            ->required(),
+                    ])
+                    ->action(function ($form) {
+                        // Ambil bulan dari form yang sudah disubmit
+                        $bulan = $form->getState()['bulan'];  // Mengambil data bulan dari form state
+                        $tahun = now()->format('Y');  // Tahun saat ini
+
+                        // Redirect ke URL laporan sesuai bulan dan tahun yang dipilih
+                        return redirect(route('laporan-transaksi-simpanan', [
+                            'bulan' => $bulan,
+                            'tahun' => $tahun
+                        ]));
+                    })
+                    ->openUrlInNewTab(),
+            ])
+                ->label('Cetak Laporan per Bulan')
+                ->icon('heroicon-m-ellipsis-vertical')
                 ->color('success')
-                ->icon('heroicon-o-document-text')
-                ->url(fn() => route('laporan-transaksi-simpanan'))
-                ->openUrlInNewTab(),
-            Actions\Action::make('generate_laporan_perbulan')
-                ->label('Cetak Laporan Per Bulan')
-                ->color('success')
-                ->icon('heroicon-o-document-text')
-                ->url(fn() => route('laporan-transaksi-simpanan', ['bulan' => now()->format('m'), 'tahun' => now()->format('Y')]))
-                ->openUrlInNewTab(),
+                ->button(),
             Actions\Action::make('generate_laporan_pertahun')
                 ->label('Cetak Laporan Per Tahun')
                 ->color('success')
@@ -69,7 +108,7 @@ class ListSavings extends ListRecords
 
         // Return success notification
         \Filament\Notifications\Notification::make()
-            ->title('Simpanan Wajib 400rb berhasil ditambahkan ke semua anggota.')
+            ->title('Simpanan Wajib berhasil ditambahkan ke semua anggota.')
             ->success()
             ->send();
     }
