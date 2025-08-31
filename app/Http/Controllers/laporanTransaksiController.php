@@ -44,10 +44,6 @@ class laporanTransaksiController extends Controller
 
     public function laporan_transaksi_simpanan(Request $request)
     {
-        // Ambil bulan dan tahun dari URL
-        // $bulan = $request->input('bulan', now()->format('m'));
-        // $tahun = $request->input('tahun', now()->format('Y'));
-
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
         // Jika bulan 'all', ambil laporan untuk seluruh tahun
