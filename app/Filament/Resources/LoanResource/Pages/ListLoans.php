@@ -71,17 +71,6 @@ class ListLoans extends ListRecords
                 ->color('success')
                 ->button(),
 
-            // Cetak per bulan (langsung bulan sekarang)
-            Actions\Action::make('generate_laporan_pinjaman_bulan')
-                ->label('Cetak Laporan Pinjaman Per Bulan (Bulan Ini)')
-                ->color('success')
-                ->icon('heroicon-o-document-text')
-                ->url(fn() => route('laporan-transaksi-pinjaman', [
-                    'bulan' => now()->format('m'),
-                    'tahun' => now()->format('Y'),
-                ]))
-                ->openUrlInNewTab(),
-
             // Cetak per tahun (semua bulan)
             Actions\Action::make('generate_laporan_pinjaman_tahun')
                 ->label('Cetak Laporan Pinjaman Per Tahun')
